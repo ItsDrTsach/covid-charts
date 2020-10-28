@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from "react";
+import { RecoilRoot } from "recoil";
+import styled from "styled-components";
+import { CenteredLoading } from "./ui/CenteredLoading";
+import Graph from "./components/Graph";
+import { GlobalStyles } from "./ui/GlobalStyles";
+import Form from "./components/Form";
+import { Title } from "./ui/Typography";
 
-function App() {
+const GraphContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+`;
+
+const AppWrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+`;
+const FormWrapper = styled.div`
+  width: 20vw;
+`;
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<CenteredLoading />}>
+      <AppWrapper>
+        <Title>Corona Dashboard</Title>
+        <GraphContainer>
+          <Graph />
+          <FormWrapper>
+            <Form />
+          </FormWrapper>
+        </GraphContainer>
+      </AppWrapper>
+    </Suspense>
   );
-}
+};
 
-export default App;
+const Root = () => (
+  <RecoilRoot>
+    <App />
+    <GlobalStyles />
+  </RecoilRoot>
+);
+export default Root;
